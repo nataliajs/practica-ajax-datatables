@@ -1,0 +1,84 @@
+<!doctype html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <title>practica ajax datatables</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!--<link rel="shortcut icon" href="/favicon.ico">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/datatables/media/css/jquery.dataTables.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/growl/stylesheets/jquery.growl.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+  </head>
+  <body>
+    <div class="container">
+                <div class="jumbotron">
+                    <h2>Doctores</h2>
+                    <p>Natalia Jiménez Sánchez</p>
+                </div>
+
+                <div id='tabla'>
+                        <table id="datatable" class="table">
+                                <thead>
+                                    <th>Doctor</th>
+                                    <th>Nº Colegiado</th>
+                                    <th>Clinica</th>
+                                    <th>Editar</th>
+                                    <th>Borrar</th>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                                <tfoot>
+                                    <th>Doctor</th>
+                                    <th>Nº Colegiado</th>
+                                    <th>Clinica</th>
+                                    <th>Editar</th>
+                                    <th>Borrar</th>
+                                </tfoot>
+                        </table>
+                </div>
+    </div>
+
+<div id='modalBorrar' class="modal fade">
+      <div class="modal-dialog">
+            <div class="modal-content">
+                  <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Borrar Doctor</h4>
+                  </div>
+                  <div class="modal-body">
+                        <p>¿Seguro que quieres borrar el doctor?</p>
+                  </div>
+                  <div class="modal-footer">
+                        <button id='cancelar' type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary confirmarBorrar">Borrar</button>
+                  </div>
+            </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/growl/javascripts/jquery.growl.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+
+
+        <!-- build:js({app,.tmp}) scripts/main.js -->
+        <script src="scripts/main.js"></script>
+        <!-- endbuild -->
+</body>
+</html>

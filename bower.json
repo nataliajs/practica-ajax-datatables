@@ -1,0 +1,10 @@
+{
+  "name": "practica-ajax-datatables",
+  "private": true,
+  "dependencies": {
+    "jquery": "~1.11.1",
+    "datatables": "~1.10.6",
+    "bootstrap": "~3.3.4",
+    "growl": "~1.2.5"
+  }
+}
