@@ -89,9 +89,48 @@ $(document).ready(function(){
 
 //EDITAR
 	$('#datatable').on('click','.editarbtn', function(e){
-		e.preventDefault();
+				e.preventDefault();
 
+				var nRow = $(this).parents('tr')[0];
+				var aData = datatable.row(nRow).data();
+				var id_doctor = aData.idDoctor;
+				$('#modalEditar').modal('show');
 
+				var nombre=aData.nombreDoctor;
+				var colegiado=aData.numColegiado;
+				//var clinic = aData.
+				$('#editarNombre').val(nombre);
+				$('#numColegiado').val(colegiado);
+
+				$('#selectEditar').load('php/cargar_clinicas.php');
+
+				$('#modalEditar').off('click').on('click','.confirmarEditarbtn', function(){
+						var nom = $('#editarNombre').val();
+						var cole = $('#numColegiado').val();
+						var clinicas = $('#selectEditar').val();
+
+						$.ajax({
+							type: 'POST',
+							dataType: 'json',
+							url: 'editar.php',
+							data: {
+								id_doctor : id_doctor,
+								nombre : nom,
+								colegiado : cole,
+								clinicas : clinicas
+							},
+							error: function(xhr,status,error){
+								alert('Ha entrado en error en ajax');
+								$.growl.error({message: "Error en la llamada ajax"});
+							},
+							success: function(data){							    					
+								datatable.draw();
+								$('#modalEditar').modal('hide');
+								var mensaje=data[0].mensaje;
+								$.growl.notice({message: mensaje});
+							}
+						});
+				});
 	});
 
 });
