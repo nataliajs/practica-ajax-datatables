@@ -11,7 +11,7 @@ $resultado=$mysql->query($consulta);
 $clinicas='';
 $c=$resultado->fetch_array();
 while($c){
-	$clinicas.='<option>'.$c[0].'</option>';
+	$clinicas.='<option value ='.$c['id_clinica'].'>'.$c['nombre'].'</option>';
 	$c=$resultado->fetch_array();
 }
 echo $clinicas;

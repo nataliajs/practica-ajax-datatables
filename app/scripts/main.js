@@ -40,13 +40,13 @@ $(document).ready(function(){
            		{	
            			'data' : 'idDoctor',
            			'render':function(data){
-           				return '<a class="btn btn-info editarbtn" href=http://localhost/dist/php/editar.php?iddoctor='+data+'>Editar</a>';
+           				return '<a class="btn btn-info editarbtn" href="#">Editar</a>';
            			}
            		},
            		{
            			'data' : 'idDoctor',
            			'render' : function(data){
-           				return '<a class="btn btn-warning borrarbtn" href=http://localhost/dist/php/borrar.php?iddoctor='+data+'>Borrar</a>';
+           				return '<a class="btn btn-warning borrarbtn" href="#">Borrar</a>';
            			}
            		}
            ]
@@ -63,7 +63,7 @@ $(document).ready(function(){
 			$('#modalBorrar').modal('show');
 
 //!!!!!se acumulan los eventos:  http://www.parallaxinfotech.com/blog/preventing-duplicate-jquery-click-events
-			$('#modalBorrar').off('click').on('click','.confirmarBorrar', function(){
+			$('#modalBorrar').off('click' , '.confirmarBorrar').on('click','.confirmarBorrar', function(){
 
 						$.ajax({
 							type: 'POST',
@@ -79,12 +79,11 @@ $(document).ready(function(){
 							success: function(data){							    					
 								datatable.draw();
 								$('#modalBorrar').modal('hide');
-								var mensaje=data['mensaje'];
+								var mensaje=data[0].mensaje;
 								$.growl.notice({message: mensaje});
 							}
 						});
 			});
-
 	});
 
 //EDITAR
@@ -94,17 +93,57 @@ $(document).ready(function(){
 				var nRow = $(this).parents('tr')[0];
 				var aData = datatable.row(nRow).data();
 				var id_doctor = aData.idDoctor;
-				$('#modalEditar').modal('show');
+				
+
 
 				var nombre=aData.nombreDoctor;
 				var colegiado=aData.numColegiado;
-				//var clinic = aData.
+				var clinic = aData.clinicas.split(',');
 				$('#editarNombre').val(nombre);
 				$('#numColegiado').val(colegiado);
 
-				$('#selectEditar').load('php/cargar_clinicas.php');
+				$('#selectEditar').load('php/cargar_clinicas.php');				
 
-				$('#modalEditar').off('click').on('click','.confirmarEditarbtn', function(){
+				/*clinic.forEach(function(entry){
+					console.log('clinica de aData:');
+					console.log(entry);					
+					$('#selectEditar').find('option').each(function(){
+						var cli = $(this);
+						console.log('Clinicas del formulario:');
+						console.log(cli);
+						if(entry==cli.text()){
+							$(this).prop('selected',true);
+						}
+					});
+				});*/
+
+				/*clinic.forEach(function(entry){
+					var seleccionada = entry;
+					console.log('clinica de aData:');
+					console.log(seleccionada);
+					$('#selectEditar option').filter(function(){
+						return this.text.toLowerCase() === seleccionada.toLowerCase();
+						console.log('clinica de formulario:');
+					console.log(this.text());
+					}).attr('selected' , true);
+				});*/
+
+				clinic.forEach(function(entry){
+					console.log('clinica de aData:');
+					console.log(entry);					
+					$('#selectEditar option').each(function(){
+						var cli = $(this).text();
+						console.log('Clinicas del formulario:');
+						console.log(cli);
+						if(entry==cli){
+							$(this).prop('selected',true);
+						}
+					});
+				});
+
+				$('#modalEditar').modal('show');
+				
+				$('#modalEditar').off('click' , '.confirmarEditarbtn').on('click','.confirmarEditarbtn', function(){
 						var nom = $('#editarNombre').val();
 						var cole = $('#numColegiado').val();
 						var clinicas = $('#selectEditar').val();
@@ -112,7 +151,7 @@ $(document).ready(function(){
 						$.ajax({
 							type: 'POST',
 							dataType: 'json',
-							url: 'editar.php',
+							url: 'php/editar.php',
 							data: {
 								id_doctor : id_doctor,
 								nombre : nom,
@@ -131,6 +170,7 @@ $(document).ready(function(){
 							}
 						});
 				});
+				
 	});
 
 });

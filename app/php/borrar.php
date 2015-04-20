@@ -27,7 +27,7 @@ if($mysql->connect_error){
 
 if(!$query_res){
 	if ($mysql->errno == 1451) {
-        $mensaje = "Imposible borrar el doctor";
+        $mensaje = "Imposible borrar el doctor(integridad referencial)";
         $estado = $mysql->errno;
         //echo "<script type='text/javascript'>alert('".$mensaje."');</script>";
     } else {
@@ -35,7 +35,7 @@ if(!$query_res){
         $estado = $mysql->errno;
     }
 } else {
-    $mensaje = "Actualización correcta";
+    $mensaje = "Doctor borrado";
     $estado = 0;
 }
 $resultado=array();
