@@ -1,5 +1,36 @@
 'use strict';
 $(document).ready(function(){
+
+	//validacion del formulario EDITAR AÑADIR
+	var validacion = $('#formEditar').validate({
+							rules:{
+								nombre:{
+									required:true,
+									lettersonlywithspaces:true
+								},
+								colegiado:{
+									digits: true
+								},
+								clinica:{
+									required:true
+								}
+							},
+							messages:{
+								nombre:{
+									required: 'Debes introducir el nombre del doctor',
+									lettersonlywithspaces: 'Introduce solo caracteres'
+								},
+								colegiado:{
+									digits: 'Introduce solo digitos'
+								},
+								clinica:{
+									required: 'Debes marcar al menos una clinica'
+								}
+							},
+							submitHandler:function(){}
+						});
+
+
 	var datatable=$('#datatable').DataTable({
 		'processing':true,
 		'serverSide':true,
@@ -29,7 +60,12 @@ $(document).ready(function(){
                }
            },
            'columns':[
-           		{'data' : 'nombreDoctor'},
+           		{
+           			'data' : 'nombreDoctor',
+           			'render' : function(data){
+           				return '<a class="editarbtn" href="#">'+data+'</a>';
+           			}
+           		},
            		{'data' : 'numColegiado'},
            		{
            			'data' : 'clinicas',
@@ -87,6 +123,7 @@ $(document).ready(function(){
 	});
 
 //EDITAR
+//tanto el enlace del nombre del doctor como el bot´on editar son de la clase 'editarbtn'
 	$('#datatable').on('click','.editarbtn', function(e){
 				e.preventDefault();
 
@@ -102,7 +139,7 @@ $(document).ready(function(){
 				$('#editarNombre').val(nombre);
 				$('#numColegiado').val(colegiado);
 
-				$('#selectEditar').load('php/cargar_clinicas.php');				
+				var promise = $('#selectEditar').load('php/cargar_clinicas.php', function(){				
 
 				/*clinic.forEach(function(entry){
 					console.log('clinica de aData:');
@@ -127,48 +164,57 @@ $(document).ready(function(){
 					console.log(this.text());
 					}).attr('selected' , true);
 				});*/
+				
+				
+						clinic.forEach(function(entry){
+							console.log('clinica de aData:');
+							console.log(entry);					
+							$('#selectEditar option').each(function(){
+								var cli = $(this);
+								console.log('Clinicas del formulario:');
+								console.log(cli.text());
+								if(entry==cli.text()){
+									console.log('COINCIDE!!!');
+									cli.attr('selected',true);
+								}
+							});
+						});
 
-				clinic.forEach(function(entry){
-					console.log('clinica de aData:');
-					console.log(entry);					
-					$('#selectEditar option').each(function(){
-						var cli = $(this).text();
-						console.log('Clinicas del formulario:');
-						console.log(cli);
-						if(entry==cli){
-							$(this).prop('selected',true);
-						}
-					});
+						$('#modalEditar').modal('show');
 				});
 
-				$('#modalEditar').modal('show');
-				
-				$('#modalEditar').off('click' , '.confirmarEditarbtn').on('click','.confirmarEditarbtn', function(){
-						var nom = $('#editarNombre').val();
-						var cole = $('#numColegiado').val();
-						var clinicas = $('#selectEditar').val();
+//!!!!!se acumulan los eventos:  http://www.parallaxinfotech.com/blog/preventing-duplicate-jquery-click-events
+				$('#modalEditar').off('click' , '.confirmarEditarbtn').on('click','.confirmarEditarbtn', function(e){
+						e.preventDefault();
 
-						$.ajax({
-							type: 'POST',
-							dataType: 'json',
-							url: 'php/editar.php',
-							data: {
-								id_doctor : id_doctor,
-								nombre : nom,
-								colegiado : cole,
-								clinicas : clinicas
-							},
-							error: function(xhr,status,error){
-								alert('Ha entrado en error en ajax');
-								$.growl.error({message: "Error en la llamada ajax"});
-							},
-							success: function(data){							    					
-								datatable.draw();
-								$('#modalEditar').modal('hide');
-								var mensaje=data[0].mensaje;
-								$.growl.notice({message: mensaje});
-							}
-						});
+						if(validacion.form()){
+
+								var nom = $('#editarNombre').val();
+								var cole = $('#numColegiado').val();
+								var clinicas = $('#selectEditar').val();
+
+								$.ajax({
+									type: 'POST',
+									dataType: 'json',
+									url: 'php/editar.php',
+									data: {
+										id_doctor : id_doctor,
+										nombre : nom,
+										colegiado : cole,
+										clinicas : clinicas
+									},
+									error: function(xhr,status,error){
+										alert('Ha entrado en error en ajax');
+										$.growl.error({message: "Error en la llamada ajax"});
+									},
+									success: function(data){							    					
+										datatable.draw();
+										$('#modalEditar').modal('hide');
+										var mensaje=data[0].mensaje;
+										$.growl.notice({message: mensaje});
+									}
+								});
+						}
 				});
 				
 	});

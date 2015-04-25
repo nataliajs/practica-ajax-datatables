@@ -6,6 +6,6 @@
     "datatables": "~1.10.6",
     "bootstrap": "~3.3.4",
     "growl": "~1.2.5",
-    "jquery-validate": "~1.13.1"
+    "validate": "~0.7.1"
   }
 }

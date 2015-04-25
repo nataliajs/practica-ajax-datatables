@@ -74,18 +74,18 @@
       </div>
 
       <div class="modal-body">
-            <form>
+            <form novalidate id='formEditar'>
                       <div class="form-group">
-                        <label for="nombre">Nombre</label>
-                        <input type="text" class="form-control" id="editarNombre" placeholder=''>
+                        <label for="editarNombre">Nombre</label>
+                        <input type="text" name="nombre" class="form-control" id="editarNombre" placeholder=''>
                       </div>
                       <div class="form-group">
                         <label for="numColegiado">Nº de colegiado</label>
-                        <input type="text" class="form-control" id="numColegiado">
+                        <input type="text" name='colegiado' class="form-control" id="numColegiado">
                       </div>
                       <div class="form-group">
-                            <label>Clinicas</label>
-                            <select multiple class="form-control" id='selectEditar'>
+                            <label for='selectEditar'>Clinicas</label>
+                            <select multiple name='clinica' class="form-control" id='selectEditar'>
                             </select>
                       </div>
             </form>
@@ -106,13 +106,14 @@
     <script src="bower_components/datatables/media/js/jquery.dataTables.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/growl/javascripts/jquery.growl.js"></script>
-    <script src="bower_components/validate/validate.js"></script>
+    <script src="bower_components/jquery-validate/dist/jquery.validate.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
 
 
         <!-- build:js({app,.tmp}) scripts/main.js -->
+        <script src="scripts/additional-methods.js"></script>
         <script src="scripts/main.js"></script>
         <!-- endbuild -->
 </body>
