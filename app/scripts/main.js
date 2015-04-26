@@ -63,7 +63,7 @@ $(document).ready(function(){
            		{
            			'data' : 'nombreDoctor',
            			'render' : function(data){
-           				return '<a class="editarbtn" href="#">'+data+'</a>';
+           				return '<a class="editarbtn count" href="#">'+data+'</a>';
            			}
            		},
            		{'data' : 'numColegiado'},
@@ -122,6 +122,50 @@ $(document).ready(function(){
 			});
 	});
 
+
+//NUEVO
+	$('#barra').on('click','.nuevo', function(e){
+				e.preventDefault();
+				
+				document.getElementById('formEditar').reset();
+
+				$('#selectEditar').load('php/cargar_clinicas.php', function(){
+					$('#modalEditar').modal('show');
+				});
+
+				$('#modalEditar').off('click', '.confirmarEditarbtn').on('click','.confirmarEditarbtn',function(d){
+					d.preventDefault();
+					if(validacion.form()){
+						var nombre = $('#editarNombre').val();
+						var colegiado = $('#numColegiado').val();
+						var clinicas = $('#selectEditar').val();
+
+						$.ajax({
+							type: 'POST',
+							dataType: 'json',
+							url: 'php/nuevo.php',
+							data: {
+								nombre : nombre,
+								colegiado : colegiado,
+								clinicas : clinicas
+							},
+							error: function(xhr , status , error){
+								alert('Error en la llamada ajax');
+							},
+							success: function(data){
+								datatable.draw();
+								$('#modalEditar').modal('hide');
+								var mensaje = data[0].mensaje;
+								$.growl.notice({message : mensaje});
+							}
+						});
+					}
+
+				});
+
+	});
+
+
 //EDITAR
 //tanto el enlace del nombre del doctor como el bot´on editar son de la clase 'editarbtn'
 	$('#datatable').on('click','.editarbtn', function(e){
@@ -135,37 +179,12 @@ $(document).ready(function(){
 
 				var nombre=aData.nombreDoctor;
 				var colegiado=aData.numColegiado;
-				var clinic = aData.clinicas.split(',');
+				var clinic = aData.clinicas.split('</li><li>');
 				$('#editarNombre').val(nombre);
 				$('#numColegiado').val(colegiado);
 
-				var promise = $('#selectEditar').load('php/cargar_clinicas.php', function(){				
+				$('#selectEditar').load('php/cargar_clinicas.php', function(){				
 
-				/*clinic.forEach(function(entry){
-					console.log('clinica de aData:');
-					console.log(entry);					
-					$('#selectEditar').find('option').each(function(){
-						var cli = $(this);
-						console.log('Clinicas del formulario:');
-						console.log(cli);
-						if(entry==cli.text()){
-							$(this).prop('selected',true);
-						}
-					});
-				});*/
-
-				/*clinic.forEach(function(entry){
-					var seleccionada = entry;
-					console.log('clinica de aData:');
-					console.log(seleccionada);
-					$('#selectEditar option').filter(function(){
-						return this.text.toLowerCase() === seleccionada.toLowerCase();
-						console.log('clinica de formulario:');
-					console.log(this.text());
-					}).attr('selected' , true);
-				});*/
-				
-				
 						clinic.forEach(function(entry){
 							console.log('clinica de aData:');
 							console.log(entry);					
