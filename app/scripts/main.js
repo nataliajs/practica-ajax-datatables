@@ -34,7 +34,7 @@ $(document).ready(function(){
 	var datatable=$('#datatable').DataTable({
 		'processing':true,
 		'serverSide':true,
-		'ajax':'php/main.php',
+		'ajax':'http://nataliajimenez.infenlaces.com/practica-ajax-datatables/php/main.php',
 		'language': {
                'sProcessing': 'Procesando...',
                'sLengthMenu': 'Mostrar _MENU_ registros',
@@ -59,6 +59,10 @@ $(document).ready(function(){
                    'sSortDescending': ': Activar para ordenar la columna de manera descendente'
                }
            },
+           'columnDefs':[{
+           			'targets':[3,4],
+           			'orderable':false
+       		}],
            'columns':[
            		{
            			'data' : 'nombreDoctor',
@@ -104,7 +108,7 @@ $(document).ready(function(){
 						$.ajax({
 							type: 'POST',
 							dataType: 'json',
-							url: 'php/borrar.php',
+							url: 'http://nataliajimenez.infenlaces.com/practica-ajax-datatables/php/borrar.php',
 							data:{
 								iddoctor : id_doctor
 							},
@@ -129,7 +133,7 @@ $(document).ready(function(){
 				
 				document.getElementById('formEditar').reset();
 
-				$('#selectEditar').load('php/cargar_clinicas.php', function(){
+				$('#selectEditar').load('http://nataliajimenez.infenlaces.com/practica-ajax-datatables/php/cargar_clinicas.php', function(){
 					$('#modalEditar').modal('show');
 				});
 
@@ -143,7 +147,7 @@ $(document).ready(function(){
 						$.ajax({
 							type: 'POST',
 							dataType: 'json',
-							url: 'php/nuevo.php',
+							url: 'http://nataliajimenez.infenlaces.com/practica-ajax-datatables/php/nuevo.php',
 							data: {
 								nombre : nombre,
 								colegiado : colegiado,
@@ -183,7 +187,7 @@ $(document).ready(function(){
 				$('#editarNombre').val(nombre);
 				$('#numColegiado').val(colegiado);
 
-				$('#selectEditar').load('php/cargar_clinicas.php', function(){				
+				$('#selectEditar').load('http://nataliajimenez.infenlaces.com/practica-ajax-datatables/php/cargar_clinicas.php', function(){				
 
 						clinic.forEach(function(entry){
 							console.log('clinica de aData:');
@@ -215,7 +219,7 @@ $(document).ready(function(){
 								$.ajax({
 									type: 'POST',
 									dataType: 'json',
-									url: 'php/editar.php',
+									url: 'http://nataliajimenez.infenlaces.com/practica-ajax-datatables/php/editar.php',
 									data: {
 										id_doctor : id_doctor,
 										nombre : nom,
@@ -223,7 +227,7 @@ $(document).ready(function(){
 										clinicas : clinicas
 									},
 									error: function(xhr,status,error){
-										alert('Ha entrado en error en ajax');
+										alert('Error en ajax');
 										$.growl.error({message: "Error en la llamada ajax"});
 									},
 									success: function(data){							    					
